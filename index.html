@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>แอปบริหารงบประมาณส่วนบุคคล</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- ส่วนหัว -->
+  <header class="header">
+    <h1 class="header-title">แอปบริหารงบประมาณส่วนบุคคล</h1>
+    <p class="header-subtitle">Created by Niran Chayapolkun</p>
+  </header>
+
+  <main class="container">
+    <!-- เลือกเดือนและปี -->
+    <div class="section">
+      <h2 class="section-title">เลือกเดือนและปี</h2>
+      <div class="month-year-selector">
+        <div class="select-container">
+          <select id="month-select" class="select"></select>
+        </div>
+        <div class="select-container">
+          <select id="year-select" class="select"></select>
+        </div>
+      </div>
+    </div>
+
+    <!-- เงินเดือน -->
+    <div class="section">
+      <h2 class="section-title">เงินเดือน</h2>
+      <input type="number" id="salary-input" class="input" placeholder="ระบุเงินเดือน">
+    </div>
+
+    <!-- หนี้สิน -->
+    <div class="category-section">
+      <div class="category-header">
+        <div class="category-icon debt">ห</div>
+        <div class="category-info">
+          <h3 class="category-title">หนี้สิน</h3>
+          <p class="category-description">รายการที่ต้องจ่ายก่อนอื่น</p>
+        </div>
+      </div>
+      <div id="debt-items"></div>
+      <button id="add-debt" class="add-button">
+        <span class="add-icon">+</span> เพิ่มรายการ
+      </button>
+    </div>
+
+    <!-- คืนเงินตัวเอง -->
+    <div class="category-section">
+      <div class="category-header">
+        <div class="category-icon self-return">ค</div>
+        <div class="category-info">
+          <h3 class="category-title">คืนเงินตัวเอง</h3>
+          <p class="category-description">เงินที่ใช้ไปก่อนและต้องคืนให้ตัวเอง</p>
+        </div>
+      </div>
+      <div id="self-return-items"></div>
+      <button id="add-self-return" class="add-button">
+        <span class="add-icon">+</span> เพิ่มรายการ
+      </button>
+    </div>
+
+    <!-- การลงทุน -->
+    <div class="category-section">
+      <div class="category-header">
+        <div class="category-icon investment">ล</div>
+        <div class="category-info">
+          <h3 class="category-title">การลงทุน</h3>
+          <p class="category-description">เงินที่นำไปลงทุนเพื่อสร้างผลตอบแทน</p>
+        </div>
+      </div>
+      <div id="investment-items"></div>
+      <button id="add-investment" class="add-button">
+        <span class="add-icon">+</span> เพิ่มรายการ
+      </button>
+    </div>
+
+    <!-- คงเหลือ -->
+    <div class="remaining-section">
+      <h3 class="remaining-title">คงเหลือหลังหักค่าใช้จ่าย</h3>
+      <div id="remaining-amount" class="remaining-amount">0 บาท</div>
+    </div>
+
+    <!-- ค่าใช้จ่ายในเดือน -->
+    <div class="category-section">
+      <div class="category-header">
+        <div class="category-icon expense">จ</div>
+        <div class="category-info">
+          <h3 class="category-title">ค่าใช้จ่ายในเดือน</h3>
+          <p class="category-description">ค่าใช้จ่ายที่ต้องจ่ายในเดือนนี้</p>
+        </div>
+      </div>
+      <div id="expense-items"></div>
+      <button id="add-expense" class="add-button">
+        <span class="add-icon">+</span> เพิ่มรายการ
+      </button>
+    </div>
+
+    <!-- เงินออม -->
+    <div class="category-section">
+      <div class="category-header">
+        <div class="category-icon saving">อ</div>
+        <div class="category-info">
+          <h3 class="category-title">เงินออม</h3>
+          <p class="category-description">เงินที่เก็บออมไว้ใช้ในอนาคต</p>
+        </div>
+      </div>
+      <div id="saving-items"></div>
+      <button id="add-saving" class="add-button">
+        <span class="add-icon">+</span> เพิ่มรายการ
+      </button>
+    </div>
+
+    <!-- ปุ่มสำรองและนำเข้าข้อมูล -->
+    <div class="backup-section">
+      <h2 class="section-title">สำรองและนำเข้าข้อมูล</h2>
+      <div class="backup-buttons">
+        <button id="export-button" class="button button-outline">
+          <span class="icon">↓</span> ส่งออกข้อมูล
+        </button>
+        <div class="import-container">
+          <label for="import-file" class="button button-outline">
+            <span class="icon">↑</span> นำเข้าข้อมูล
+          </label>
+          <input type="file" id="import-file" accept=".json" style="display: none;">
+        </div>
+      </div>
+    </div>
+
+    <!-- ปุ่มบันทึกและดูสรุป -->
+    <div class="footer">
+      <div class="footer-buttons">
+        <button id="save-button" class="button button-primary">บันทึก</button>
+        <button id="view-summary" class="button button-outline">ดูสรุป</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

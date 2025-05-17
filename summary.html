@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>สรุปงบประมาณรายเดือน</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- ส่วนหัว -->
+  <header class="header">
+    <h1 class="header-title">สรุปงบประมาณรายเดือน</h1>
+    <p class="header-subtitle">Created by Niran Chayapolkun</p>
+  </header>
+
+  <main class="container">
+    <!-- เลือกเดือนและแสดงเงินเดือน -->
+    <div class="summary-header">
+      <div class="flex-between">
+        <div id="month-year-display">เดือน</div>
+        <button id="edit-button" class="button button-small">แก้ไข</button>
+      </div>
+      <div class="flex">
+        <div id="salary-display" class="summary-amount">฿ 0</div>
+        <div id="salary-comparison" class="badge neutral-badge">เทียบกับเดือนก่อน</div>
+      </div>
+    </div>
+
+    <!-- แสดงกราฟ -->
+    <div class="section">
+      <h2 class="section-title">รายจ่ายเดือนนี้</h2>
+      <div class="chart-container">
+        <canvas id="expense-chart"></canvas>
+      </div>
+      <div class="flex-wrap">
+        <div class="chart-legend"><span class="color-indicator" style="background-color: #c41e3a;"></span>หนี้สิน</div>
+        <div class="chart-legend"><span class="color-indicator" style="background-color: #5e35b1;"></span>คืนเงินตัวเอง</div>
+        <div class="chart-legend"><span class="color-indicator" style="background-color: #1e40af;"></span>การลงทุน</div>
+        <div class="chart-legend"><span class="color-indicator" style="background-color: #f59e0b;"></span>ค่าใช้จ่ายในเดือน</div>
+        <div class="chart-legend"><span class="color-indicator" style="background-color: #10b981;"></span>เงินออม</div>
+      </div>
+    </div>
+
+    <!-- กราฟเงินเดือนย้อนหลัง -->
+    <div class="section">
+      <h2 class="section-title">เงินเดือนย้อนหลัง</h2>
+      <div class="chart-container">
+        <canvas id="salary-chart"></canvas>
+      </div>
+    </div>
+
+    <!-- รายละเอียดหมวดหมู่ -->
+    <div class="section">
+      <h2 class="section-title">รายละเอียดหมวดหมู่</h2>
+      
+      <!-- หนี้สิน -->
+      <div class="category-section">
+        <div class="flex-between">
+          <div class="flex">
+            <div class="category-icon debt">ห</div>
+            <h3 class="category-title">หนี้สิน</h3>
+          </div>
+          <div id="debt-comparison" class="badge neutral-badge">-</div>
+        </div>
+        <div id="debt-details" class="details-list">
+          <!-- รายการหนี้สินจะถูกเพิ่มที่นี่ด้วย JavaScript -->
+        </div>
+        <div class="flex-between total-row">
+          <span>รวม</span>
+          <span id="debt-total">0 บาท</span>
+        </div>
+      </div>
+
+      <!-- คืนเงินตัวเอง -->
+      <div class="category-section">
+        <div class="flex-between">
+          <div class="flex">
+            <div class="category-icon self-return">ค</div>
+            <h3 class="category-title">คืนเงินตัวเอง</h3>
+          </div>
+          <div id="self-return-comparison" class="badge neutral-badge">-</div>
+        </div>
+        <div id="self-return-details" class="details-list">
+          <!-- รายการคืนเงินตัวเองจะถูกเพิ่มที่นี่ด้วย JavaScript -->
+        </div>
+        <div class="flex-between total-row">
+          <span>รวม</span>
+          <span id="self-return-total">0 บาท</span>
+        </div>
+      </div>
+
+      <!-- การลงทุน -->
+      <div class="category-section">
+        <div class="flex-between">
+          <div class="flex">
+            <div class="category-icon investment">ล</div>
+            <h3 class="category-title">การลงทุน</h3>
+          </div>
+          <div id="investment-comparison" class="badge neutral-badge">-</div>
+        </div>
+        <div id="investment-details" class="details-list">
+          <!-- รายการลงทุนจะถูกเพิ่มที่นี่ด้วย JavaScript -->
+        </div>
+        <div class="flex-between total-row">
+          <span>รวม</span>
+          <span id="investment-total">0 บาท</span>
+        </div>
+      </div>
+
+      <!-- คงเหลือ -->
+      <div class="remaining-section">
+        <div class="flex-between">
+          <h3 class="remaining-title">คงเหลือหลังหักค่าใช้จ่าย</h3>
+          <div id="remaining-comparison" class="badge neutral-badge">-</div>
+        </div>
+        <div id="remaining-amount" class="remaining-amount">0 บาท</div>
+      </div>
+
+      <!-- ค่าใช้จ่ายในเดือน -->
+      <div class="category-section">
+        <div class="flex-between">
+          <div class="flex">
+            <div class="category-icon expense">จ</div>
+            <h3 class="category-title">ค่าใช้จ่ายในเดือน</h3>
+          </div>
+          <div class="badge neutral-badge">เทียบกับเดือนก่อน</div>
+        </div>
+        <div id="expense-details" class="details-list">
+          <!-- รายการค่าใช้จ่ายจะถูกเพิ่มที่นี่ด้วย JavaScript -->
+        </div>
+        <div class="flex-between total-row">
+          <span>รวม</span>
+          <span id="expense-total">0 บาท</span>
+        </div>
+      </div>
+
+      <!-- เงินออม -->
+      <div class="category-section">
+        <div class="flex-between">
+          <div class="flex">
+            <div class="category-icon saving">อ</div>
+            <h3 class="category-title">เงินออม</h3>
+          </div>
+          <div class="badge neutral-badge">เทียบกับเดือนก่อน</div>
+        </div>
+        <div id="saving-details" class="details-list">
+          <!-- รายการเงินออมจะถูกเพิ่มที่นี่ด้วย JavaScript -->
+        </div>
+        <div class="flex-between total-row">
+          <span>รวม</span>
+          <span id="saving-total">0 บาท</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ปุ่มสำรองและนำเข้าข้อมูล -->
+    <div class="backup-section">
+      <h2 class="section-title">สำรองและนำเข้าข้อมูล</h2>
+      <div class="backup-buttons">
+        <button id="export-button" class="button button-outline">
+          <span class="icon">↓</span> ส่งออกข้อมูล
+        </button>
+        <div class="import-container">
+          <label for="import-file" class="button button-outline">
+            <span class="icon">↑</span> นำเข้าข้อมูล
+          </label>
+          <input type="file" id="import-file" accept=".json" style="display: none;">
+        </div>
+      </div>
+    </div>
+
+    <!-- ปุ่มกลับหน้าหลัก -->
+    <div class="footer">
+      <div class="footer-buttons">
+        <button id="back-button" class="button button-primary">กลับไปหน้าหลัก</button>
+        <!-- ปุ่มลบข้อมูลจะถูกเพิ่มที่นี่ด้วย JavaScript -->
+      </div>
+    </div>
+  </main>
+
+  <script src="summary.js"></script>
+</body>
+</html>
